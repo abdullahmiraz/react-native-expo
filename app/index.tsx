@@ -24,7 +24,7 @@ export default function HomeScreen() {
     fetch("http://localhost:3000/api/names")
       .then((res) => res.json())
       .then((data) => {
-        setNames(data);
+        setNames(data.map((item: { name: string }) => item.name)); // Extract names
         setLoading(false);
       });
 
@@ -93,9 +93,11 @@ export default function HomeScreen() {
           </Text>
           <FlatList
             data={names}
-            keyExtractor={(item) => item}
+            keyExtractor={(item) => item.toString()} // Ensure a valid key
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => setSelectedName(item)}>
+              <TouchableOpacity
+                onPress={() => setSelectedName(item.toString())}
+              >
                 <Text style={{ fontSize: 18, marginVertical: 10 }}>{item}</Text>
               </TouchableOpacity>
             )}
